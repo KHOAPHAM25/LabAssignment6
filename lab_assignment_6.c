@@ -1,95 +1,101 @@
 #include <stdio.h>
-// this is the complete missing function
-int search(int numbers[], int low, int high, int value) {
-  // low is less than or equal to high
-  while (low <= high) {
-    // mid is low plus high minus low divided by 2
-    int mid = low + (high - low) / 2;
-    // if the mid number equals the value
-    if (numbers[mid] == value) {
-      //returns the mid
-      return mid;
-      //all else if mid number is less than the value
-    } else if (numbers[mid] < value) {
-      // low is mid plus 1
-      low = mid + 1;
-    } else {
-      //high is mid minus 1
-      high = mid - 1;
-    }
+// this is the binary recursive function
+int binarySearch(int numbers[], int low, int high, int value) {
+  // if low is higher than high
+  if (low > high) {
+    // returns -1
+    return -1;
   }
-  //returns -1
-  return -1;
+  // this is mid equal to low plus high divided 2
+  int mid = (low + high) / 2;
+  // if the mid number equal value
+  if (numbers[mid] == value) {
+    // returns the mid values
+    return mid;
+    // if the mid numbers are less than the actual value
+  } else if (numbers[mid] < value) {
+    // this returns the binarySearch mid + 1
+    return binarySearch(numbers, mid + 1, high, value);
+  } else {
+    // returns binarySearch mid -1
+    return binarySearch(numbers, low, mid - 1, value);
+  }
 }
-
-// this is the given void printArray
+// initiate the search again
+int search(int numbers[], int low, int high, int value) {
+  // returns binarySearch
+  return binarySearch(numbers, low, high, value);
+}
+// this is the void printArray
 void printArray(int numbers[], int sz) {
-  // integer i
+  //int i
   int i;
-  // this print out Number array:
+  //print out the Number Array
   printf("Number array : ");
-  // i standards
+  //i standards
   for (i = 0; i < sz; ++i) {
-    // this prints out the numbers
+    //prints out the numbers
     printf("%d ", numbers[i]);
   }
-  // tab down
+  //tab down
   printf("\n");
 }
-// this is the int void
+//this is the main 
 int main(void) {
-  // int i and numInputs
+  //int it and numInputs
   int i, numInputs;
-  // character of strings
+  //character strings
   char *str;
-  // average
+  //average of the numbers  
   float average;
-  // value
+  //values
   int value;
-  // index
+  //index for postion of numbers
   int index;
-  // if its NULL
+  //if numArray is NUL
   int *numArray = NULL;
-  // counting the numbers
+  //counting of the numbers
   int countOfNums;
-  // this opens the input.txt
+  //opens the input.txt
   FILE *inFile = fopen("input.txt", "r");
-  // scan the file
+  //scan the file
   fscanf(inFile, " %d\n", &numInputs);
-  // input to 0
+// loop 
   while (numInputs-- > 0) {
-    // scan the file
+    //file scan
     fscanf(inFile, " %d\n", &countOfNums);
-    // size of the numbers
+    // dynamic allocated memory 
     numArray = (int *)malloc(countOfNums * sizeof(int));
     // average is 0
     average = 0;
-    // i standards
+// i standards 
     for (i = 0; i < countOfNums; i++) {
-      // scan the inFile
+      //scan file
       fscanf(inFile, " %d", &value);
-      // number of array to value
+      //number of arrays is value
       numArray[i] = value;
-      // average
+      //average equals pus the number of Arrays 
       average += numArray[i];
     }
-    // print the array and number count
+// print Array
     printArray(numArray, countOfNums);
-    // value is when average divided by the number
+    // value is average divided by countofNums
     value = average / countOfNums;
-    // index
+    //index is added and subtracted
     index = search(numArray, 0, countOfNums - 1, value);
-    // index is greater than 0 or equal
+// if index is greater or equal to 0
     if (index >= 0) {
-      // this prints if it is in the number array
-      printf("Item %d exists in the number array at index %d!\n", value, index);
+      //prints this out if item does exist i array
+      printf("Item %d exists in the number array at index %d!\n", value,
+             index + 1);
     } else {
-      // prints out if its not in the number array
+      //prints out if item does not exist
       printf("Item %d does not exist in the number array!\n", value);
     }
-    // free the array memory
+// free the number of array
     free(numArray);
   }
-  // close the file and code
+//close the and finished the code
   fclose(inFile);
 }
+
